@@ -9,9 +9,15 @@ module.exports.getAllActive = (req, res) => {
 
     return Post.find({ isActive: true }) 
         .populate("userId", "firstName lastName email")
+        .populate("likes", "firstName lastName")
+        .populate({
+            path: "comments.userId",
+            select: "firstName lastName email"
+        })
+        .sort({ createdAt: -1 })
         .then(posts => res.status(200).send(posts))
         .catch(error => errorHandler(error, req, res));
-};   
+};
 
 
 
@@ -20,6 +26,11 @@ module.exports.getSinglePost = (req, res) => {
 
     return Post.findById(req.params.id)
         .populate("userId", "firstName lastName email")
+        .populate("likes", "firstName lastName")
+        .populate({
+            path: "comments.userId",
+            select: "firstName lastName email"
+        })
         .then(post => {
 
             if (!post) {
@@ -41,15 +52,25 @@ module.exports.addPost = (req, res) => {
         title: req.body.title,
         content: req.body.content,
         isActive: true,
-        comments: []
+        comments: [],
+        likes: []
     });
 
     return newPost.save()
-        .then(result => {
-            return res.status(201).send({
-                message: "Post created successfully",
-                post: result
-            });
+        .then(post => {
+            return Post.findById(post._id)
+                .populate("userId", "firstName lastName email")
+                .populate("likes", "firstName lastName")
+                .populate({
+                    path: "comments.userId",
+                    select: "firstName lastName email"
+                })
+                .then(populatedPost => {
+                    return res.status(201).send({
+                        message: "Post created successfully",
+                        post: populatedPost
+                    });
+                });
         })
         .catch(error => errorHandler(error, req, res));
 };
@@ -138,11 +159,21 @@ module.exports.addComment = (req, res) => {
 
             return post.save();
         })
-        .then(updated => {
-            return res.status(201).send({
-                message: "Comment added successfully",
-                post: updated
-            });
+        .then(savedPost => {
+            return Post.findById(savedPost._id)
+                .populate("userId", "firstName lastName email")
+                .populate("likes", "firstName lastName")
+                .populate({
+                    path: "comments.userId",
+                    select: "firstName lastName email"
+                })
+                .then(populatedPost => {
+                    return res.status(201).send({
+                        message: "Comment added successfully",
+                        post: populatedPost,
+                        comments: populatedPost.comments
+                    });
+                });
         })
         .catch(error => errorHandler(error, req, res));
 };
@@ -218,6 +249,76 @@ module.exports.deleteComment = (req, res) => {
                 message: "Comment deleted successfully",
                 post: updated
             });
+        })
+        .catch(error => errorHandler(error, req, res));
+};
+
+
+// LIKE POST
+module.exports.likePost = (req, res) => {
+    return Post.findById(req.params.id)
+        .then(post => {
+            if (!post) {
+                return res.status(404).send({ error: "Post not found" });
+            }
+
+            const alreadyLiked = post.likes.includes(req.user.id);
+            if (alreadyLiked) {
+                return res.status(400).send({ error: "You already liked this post" });
+            }
+
+            post.likes.push(req.user.id);
+            return post.save();
+        })
+        .then(savedPost => {
+            return Post.findById(savedPost._id)
+                .populate("userId", "firstName lastName email")
+                .populate("likes", "firstName lastName")
+                .populate({
+                    path: "comments.userId",
+                    select: "firstName lastName email"
+                })
+                .then(populatedPost => {
+                    return res.status(200).send({
+                        message: "Post liked",
+                        post: populatedPost
+                    });
+                });
+        })
+        .catch(error => errorHandler(error, req, res));
+};
+
+
+// UNLIKE POST
+module.exports.unlikePost = (req, res) => {
+    return Post.findById(req.params.id)
+        .then(post => {
+            if (!post) {
+                return res.status(404).send({ error: "Post not found" });
+            }
+
+            const likeIndex = post.likes.indexOf(req.user.id);
+            if (likeIndex === -1) {
+                return res.status(400).send({ error: "You haven't liked this post" });
+            }
+
+            post.likes.splice(likeIndex, 1);
+            return post.save();
+        })
+        .then(savedPost => {
+            return Post.findById(savedPost._id)
+                .populate("userId", "firstName lastName email")
+                .populate("likes", "firstName lastName")
+                .populate({
+                    path: "comments.userId",
+                    select: "firstName lastName email"
+                })
+                .then(populatedPost => {
+                    return res.status(200).send({
+                        message: "Post unliked",
+                        post: populatedPost
+                    });
+                });
         })
         .catch(error => errorHandler(error, req, res));
 };

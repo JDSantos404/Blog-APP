@@ -30,6 +30,12 @@ router.patch("/updateComment/:postId/:commentId", verify, postController.updateC
 // Delete Comment from Post (Admin only + User can only delete their own comment + Author of the post can delete any comment on their post)
 router.delete("/deleteComment/:postId/:commentId", verify, postController.deleteComment);
 
+// Like Post
+router.post("/like/:id", verify, postController.likePost);
+
+// Unlike Post
+router.post("/unlike/:id", verify, postController.unlikePost);
+
 module.exports = router;
 
 

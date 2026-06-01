@@ -32,6 +32,7 @@ router.get("/logout", (req, res)=> {
 	})
 })
 
+
 // register
 router.post("/register", userController.registerUser);
 // login

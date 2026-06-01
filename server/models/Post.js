@@ -30,7 +30,19 @@ const postSchema = new mongoose.Schema(
         type: String,
         required: true
     },
-    comments: [commentSchema]
+    comments: [commentSchema],
+    isActive: {
+        type: Boolean,
+        default: true
+    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    views: {
+        type: Number,
+        default: 0
+    }
 },
 { timestamps: true }
 );
