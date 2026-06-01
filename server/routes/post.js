@@ -1,44 +1,44 @@
-// Dependencies and Modules
 const express = require("express");
 const postController = require("../controllers/post");
 const auth = require("../auth");
+
 const router = express.Router();
-const { verify , verifyAdmin } = auth;
+const { verify, verifyAdmin } = auth;
 
 
-// Retrieve all active post
+// IMPORTANT: STATIC ROUTES FIRST
+
+
+// Retrieve all active posts
 router.get("/", postController.getAllActive);
 
-// Retrive Single Post
-router.get("/:id", postController.getSinglePost);
-
-// My Posts (User only + Admin can view all posts)
+// My Posts (MUST BE BEFORE /:id)
 router.get("/my-posts", verify, postController.getMyPosts);
 
-// Create Post(User only + Admin) 
+// Create Post
 router.post("/addPost", verify, postController.addPost);
 
-// Update Post (User only + Author of the post can update their post + Admin can update any post)
-router.patch("/updatePost/:id", verify, postController.updatePost);
-
-// Delete Post (Admin only + User can only delete their own post)
-router.delete("/deletePost/:id", verify, postController.deletePost);
-
-// Add Comment to Post (User only)
+// Add Comment
 router.post("/addComment/:id", verify, postController.addComment);
 
-// Update Comment on Post (User only + Author of the post can update any comment on their post)
-router.patch("/updateComment/:postId/:commentId", verify, postController.updateComment);
-
-// Delete Comment from Post (Admin only + User can only delete their own comment + Author of the post can delete any comment on their post)
-router.delete("/deleteComment/:postId/:commentId", verify, postController.deleteComment);
-
-// Like Post
+// Like / Unlike
 router.post("/like/:id", verify, postController.likePost);
-
-// Unlike Post
 router.post("/unlike/:id", verify, postController.unlikePost);
 
+// Update Comment
+router.patch("/updateComment/:postId/:commentId", verify, postController.updateComment);
+
+
+// DYNAMIC ROUTES LAST
+
+
+// Single Post (KEEP LAST)
+router.get("/:id", postController.getSinglePost);
+
+// Update Post
+router.patch("/updatePost/:id", verify, postController.updatePost);
+
+// Delete Post
+router.delete("/deletePost/:id", verify, postController.deletePost);
+
 module.exports = router;
-
-

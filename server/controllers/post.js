@@ -325,12 +325,18 @@ module.exports.unlikePost = (req, res) => {
 
 
 // GET LOGGED-IN USER POSTS
+
 module.exports.getMyPosts = (req, res) => {
-    const userId = req.user.id;
+
+    if (!req.user) {
+        return res.status(401).send({ error: "Unauthorized" });
+    }
+
+    const userId = req.user.id || req.user._id;
 
     return Post.find({ userId })
         .populate("userId", "firstName lastName email")
-        .populate("likes", "firstName lastName email")
+        .populate("likes", "firstName lastName")
         .populate({
             path: "comments.userId",
             select: "firstName lastName email"
