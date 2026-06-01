@@ -322,3 +322,22 @@ module.exports.unlikePost = (req, res) => {
         })
         .catch(error => errorHandler(error, req, res));
 };
+
+
+// GET LOGGED-IN USER POSTS
+module.exports.getMyPosts = (req, res) => {
+    const userId = req.user.id;
+
+    return Post.find({ userId })
+        .populate("userId", "firstName lastName email")
+        .populate("likes", "firstName lastName email")
+        .populate({
+            path: "comments.userId",
+            select: "firstName lastName email"
+        })
+        .sort({ createdAt: -1 })
+        .then(posts => {
+            return res.status(200).send(posts);
+        })
+        .catch(error => errorHandler(error, req, res));
+};

@@ -12,6 +12,9 @@ router.get("/", postController.getAllActive);
 // Retrive Single Post
 router.get("/:id", postController.getSinglePost);
 
+// My Posts (User only + Admin can view all posts)
+router.get("/my-posts", verify, postController.getMyPosts);
+
 // Create Post(User only + Admin) 
 router.post("/addPost", verify, postController.addPost);
 
