@@ -123,36 +123,38 @@
 
                 <p class="post-content mb-3">
                     {{ selectedPost.content }}
+                    <hr>
+                    <div class="post-actions mb-3">
+                        <button
+                            class="btn btn-sm"
+                            :class="isPostLiked ? 'btn-danger' : 'btn-outline-danger'"
+                            @click="toggleLike(selectedPost)"
+                            :disabled="!userEmail"
+                            :title="!userEmail ? 'Log in to like posts' : ''"
+                        >
+                            <i class="bi bi-heart-fill"></i>
+                            {{ selectedPost.likes?.length || 0 }}
+                        </button>
+
+                        <button
+                            v-if="isPostOwner(selectedPost)"
+                            class="btn btn-sm btn-outline-warning"
+                            @click="editPost(selectedPost)"
+                        >
+                            <i class="bi bi-pencil"></i> Edit
+                        </button>
+
+                        <button
+                            v-if="isAdmin() || isPostOwner(selectedPost)"
+                            class="btn btn-sm btn-outline-danger"
+                            @click="deletePost(selectedPost._id)"
+                        >
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </div>
                 </p>
 
-                <div class="post-actions mb-3">
-                    <button
-                        class="btn btn-sm"
-                        :class="isPostLiked ? 'btn-danger' : 'btn-outline-danger'"
-                        @click="toggleLike(selectedPost)"
-                        :disabled="!userEmail"
-                        :title="!userEmail ? 'Log in to like posts' : ''"
-                    >
-                        <i class="bi bi-heart-fill"></i>
-                        {{ selectedPost.likes?.length || 0 }}
-                    </button>
 
-                    <button
-                        v-if="isPostOwner(selectedPost)"
-                        class="btn btn-sm btn-outline-warning"
-                        @click="editPost(selectedPost)"
-                    >
-                        <i class="bi bi-pencil"></i> Edit
-                    </button>
-
-                    <button
-                        v-if="isAdmin() || isPostOwner(selectedPost)"
-                        class="btn btn-sm btn-outline-danger"
-                        @click="deletePost(selectedPost._id)"
-                    >
-                        <i class="bi bi-trash"></i> Delete
-                    </button>
-                </div>
 
                 <h5>Comments ({{ selectedPost.comments?.length || 0 }})</h5>
 
@@ -904,10 +906,9 @@ onMounted(async () => {
     flex-wrap: wrap;
     gap: 10px;
 
-    padding-bottom: 18px;
-    margin-bottom: 18px;
+    padding-bottom: 0;
+    margin-bottom: 0;
 
-    border-bottom: 1px solid #30363d;
 }
 
 /*  
