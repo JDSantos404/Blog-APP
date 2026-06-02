@@ -1,0 +1,364 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300..800&family=Playfair:ital,wght@0,300..900;1,300..900&family=Source+Code+Pro:wght@200..900&family=Unbounded:wght@200..900&family=Zilla+Slab:wght@300..700&display=swap');
+
+/* GLOBAL STYLES*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    background-color: #0d1117;
+}
+
+body {
+    font-family: 'Source Code Pro' !important;
+    background-color: #000;
+    color: #1f2937;
+}
+
+/* TYPOGRAPHY & SPACING*/
+h1, h2, h3, h4, h5, h6 {
+    color: #c9d1d9!important;
+    font-weight: 600;
+}
+
+p {
+    line-height: 1.6;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.95rem;
+}
+
+small {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* 
+   FORM ELEMENTS
+    */
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+.form-label {
+    color: #374151;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    display: block;
+}
+
+/* ERROR & SUCCESS STATES */
+.text-danger {
+    color: #ef4444 !important;
+    font-weight: 500;
+}
+
+.text-success {
+    color: #10b981 !important;
+    font-weight: 500;
+}
+
+.text-muted {
+    color: #6b7280 !important;
+}
+
+/* 
+   BUTTONS
+    */
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #6b7280;
+    color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #4b5563;
+}
+
+.btn-success {
+    background: #10b981;
+    color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+    background: #059669;
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: #dc2626;
+}
+
+.btn-outline-danger {
+    border: 2px solid #ef4444;
+    color: #ef4444;
+    background: transparent;
+}
+
+.btn-outline-danger:hover:not(:disabled) {
+    background: #fef2f2;
+}
+
+.btn-outline-warning {
+    border: 2px solid #f59e0b;
+    color: #f59e0b;
+    background: transparent;
+}
+
+.btn-outline-warning:hover:not(:disabled) {
+    background: #fffbeb;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 
+   HOME PAGE STYLES
+    */
+.home-wrapper {
+    margin-top: -70px;
+    min-height: 100vh;
+    padding: 20px;
+    background: radial-gradient(circle at top, #e0f2ff, #f7f9fc, #ffffff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-card {
+    max-width: 650px;
+    padding: 50px 40px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 15px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.feature-item {
+    text-align: center;
+}
+
+.feature-item i {
+    font-size: 2.5rem;
+    color: #3b82f6;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.feature-item p {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0;
+    font-weight: 500;
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+}
+
+.cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+    text-decoration: none;
+    color: white;
+}
+
+/* 
+   POSTS PAGE STYLES
+    */
+.sort-dropdown {
+    max-width: 200px;
+    border-radius: 8px;
+}
+
+.icon-empty {
+    font-size: 3rem;
+    color: #d1d5db;
+}
+
+/* 
+   CARDS & COMPONENTS
+    */
+.card {
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-header {
+    padding: 1.5rem;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* 
+   ALERTS
+    */
+.alert {
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.alert-info {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #93c5fd;
+}
+
+.alert-warning {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+}
+
+.alert-danger {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+}
+
+.alert-success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #86efac;
+}
+
+/* 
+   SPINNER
+    */
+.spinner-border {
+    color: #3b82f6;
+    width: 3rem;
+    height: 3rem;
+}
+
+/* 
+   RESPONSIVE DESIGN
+    */
+@media (max-width: 768px) {
+    .hero-card {
+        padding: 35px 20px;
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .features {
+        gap: 20px;
+    }
+
+    .sort-dropdown {
+        max-width: 100%;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-header {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        font-size: 0.95rem;
+    }
+
+    .feature-item i {
+        font-size: 2rem;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
