@@ -347,3 +347,98 @@ module.exports.getMyPosts = (req, res) => {
         })
         .catch(error => errorHandler(error, req, res));
 };
+
+// LIKE COMMENT
+module.exports.likeComment = (req, res) => {
+
+    const { postId, commentId } = req.params;
+    const userId = req.user.id;
+
+    return Post.findById(postId)
+        .then(post => {
+
+            if (!post) {
+                return res.status(404).send({ error: "Post not found" });
+            }
+
+            const comment = post.comments.id(commentId);
+
+            if (!comment) {
+                return res.status(404).send({ error: "Comment not found" });
+            }
+
+            // prevent duplicate like
+            if (comment.likes.includes(userId)) {
+                return res.status(400).send({ error: "Already liked this comment" });
+            }
+
+            comment.likes.push(userId);
+
+            return post.save();
+        })
+        .then(saved => {
+            return Post.findById(saved._id)
+                .populate("userId", "firstName lastName email")
+                .populate("likes", "firstName lastName")
+                .populate({
+                    path: "comments.userId",
+                    select: "firstName lastName email"
+                })
+                .then(populated => {
+                    return res.status(200).send({
+                        message: "Comment liked",
+                        post: populated
+                    });
+                });
+        })
+        .catch(error => errorHandler(error, req, res));
+};
+
+// UNLIKE COMMENT
+module.exports.unlikeComment = (req, res) => {
+
+    const { postId, commentId } = req.params;
+    const userId = req.user.id;
+
+    return Post.findById(postId)
+        .then(post => {
+
+            if (!post) {
+                return res.status(404).send({ error: "Post not found" });
+            }
+
+            const comment = post.comments.id(commentId);
+
+            if (!comment) {
+                return res.status(404).send({ error: "Comment not found" });
+            }
+
+            const index = comment.likes.findIndex(
+                id => id.toString() === userId
+            );
+
+            if (index === -1) {
+                return res.status(400).send({ error: "You haven't liked this comment" });
+            }
+
+            comment.likes.splice(index, 1);
+
+            return post.save();
+        })
+        .then(saved => {
+            return Post.findById(saved._id)
+                .populate("userId", "firstName lastName email")
+                .populate("likes", "firstName lastName")
+                .populate({
+                    path: "comments.userId",
+                    select: "firstName lastName email"
+                })
+                .then(populated => {
+                    return res.status(200).send({
+                        message: "Comment unliked",
+                        post: populated
+                    });
+                });
+        })
+        .catch(error => errorHandler(error, req, res));
+};

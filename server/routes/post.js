@@ -28,6 +28,13 @@ router.post("/unlike/:id", verify, postController.unlikePost);
 // Update Comment
 router.patch("/updateComment/:postId/:commentId", verify, postController.updateComment);
 
+// Delete Comment (author or admin handled in controller)
+router.delete("/deleteComment/:postId/:commentId", verify, postController.deleteComment);
+
+// Comment Like / Unlike
+router.post("/likeComment/:postId/:commentId", verify, postController.likeComment);
+router.post("/unlikeComment/:postId/:commentId", verify, postController.unlikeComment);
+
 
 // DYNAMIC ROUTES LAST
 
