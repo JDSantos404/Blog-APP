@@ -59,6 +59,12 @@
                         </small>
                     </div>
 
+
+
+                    <p class="post-content mb-3">
+                        {{ selectedPost.content }}
+                    </p>
+
                     <div class="post-actions mb-3">
                         <button
                             class="btn btn-sm"
@@ -87,12 +93,6 @@
                             <i class="bi bi-trash"></i> Delete
                         </button>
                     </div>
-
-                    <p class="post-content mb-3">
-                        {{ selectedPost.content }}
-                    </p>
-
-                    <hr>
 
                     <h5>Comments ({{ selectedPost.comments?.length || 0 }})</h5>
 
